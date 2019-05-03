@@ -1,7 +1,12 @@
 package net.coobird.thumbnailator.tasks.io;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -12,6 +17,8 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import org.junit.Test;
+
 import net.coobird.thumbnailator.ThumbnailParameter;
 import net.coobird.thumbnailator.builders.ThumbnailParameterBuilder;
 import net.coobird.thumbnailator.geometry.AbsoluteSize;
@@ -21,8 +28,6 @@ import net.coobird.thumbnailator.geometry.Region;
 import net.coobird.thumbnailator.tasks.UnsupportedFormatException;
 import net.coobird.thumbnailator.test.BufferedImageAssert;
 import net.coobird.thumbnailator.test.BufferedImageComparer;
-
-import org.junit.Test;
 
 
 public class InputStreamImageSourceTest
@@ -117,11 +122,13 @@ public class InputStreamImageSourceTest
 	@Test(expected=IOException.class)
 	public void badImage_Png() throws IOException
 	{
+		FileInputStream fileInputStream = null;
 		try
 		{
 			// given
 			byte[] bytes = new byte[100];
-			new FileInputStream("src/test/resources/Thumbnailator/grid.png").read(bytes);
+			fileInputStream = new FileInputStream("src/test/resources/Thumbnailator/grid.png");
+			fileInputStream.read(bytes);
 			
 			ByteArrayInputStream is = new ByteArrayInputStream(bytes);
 			InputStreamImageSource source = new InputStreamImageSource(is);
@@ -134,6 +141,8 @@ public class InputStreamImageSourceTest
 			// then
 			assertEquals("Error reading PNG image data", e.getMessage());
 			throw e;
+		}finally {
+			fileInputStream.close();
 		}
 		fail();
 	}

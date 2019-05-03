@@ -1,0 +1,24 @@
+-locale
+'en_US'
+-encoding
+'Cp1252'
+-public
+-sourcepath
+'D:/Bruno/Desenvolvimento/Projetos/thumbnailator/src/main/java'
+-Xdoclint:none
+-author
+-bottom
+'Copyright &#169; 2019. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'D:/Bruno/Desenvolvimento/Projetos/thumbnailator/javadoc'
+-docencoding
+'UTF-8'
+-doctitle
+'Thumbnailator API Documentation (Version 0.4.8)'
+-linkoffline
+'http://docs.oracle.com/javase/1.5.0/docs/api' 'D:/Bruno/Desenvolvimento/Projetos/thumbnailator/target/javadoc-bundle-options'
+-version
+-windowtitle
+'Thumbnailator API Documentation (Version 0.4.8)'
