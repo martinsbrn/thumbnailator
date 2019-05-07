@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.coobird</groupId>
   <artifactId>thumbnailator</artifactId>
-  <version>0.4.8</version>
+  <version>0.4.9-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>thumbnailator</name>
   <description>Thumbnailator - a thumbnail generation library for Java</description>
@@ -49,39 +49,39 @@
           <debuglevel>lines</debuglevel>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.1</version>
-        <configuration>
-          <additionalparam>-Xdoclint:none</additionalparam>
-          <doctitle>Thumbnailator API Documentation (Version ${project.version})</doctitle>
-          <windowtitle>Thumbnailator API Documentation (Version ${project.version})</windowtitle>
-          <locale>en_US</locale>
-          <show>public</show>
-          <use>false</use>
-          <destDir>javadoc</destDir>
-          <archive>
-            <manifestEntries>
-              <Specification-Title>Thumbnailator API Documentation</Specification-Title>
-              <Specification-Version>${project.version}</Specification-Version>
-              <Specification-Vendor>coobird.net</Specification-Vendor>
-              <Implementation-Title>Thumbnailator API Documentation</Implementation-Title>
-              <Implementation-Version>${project.version}</Implementation-Version>
-              <Implementation-Vendor>coobird.net</Implementation-Vendor>
-            </manifestEntries>
-          </archive>
-          <excludeResources>false</excludeResources>
-        </configuration>
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+<!--       <plugin> -->
+<!--         <groupId>org.apache.maven.plugins</groupId> -->
+<!--         <artifactId>maven-javadoc-plugin</artifactId> -->
+<!--         <version>2.10.1</version> -->
+<!--         <configuration> -->
+<!--           <additionalparam>-Xdoclint:none</additionalparam> -->
+<!--           <doctitle>Thumbnailator API Documentation (Version ${project.version})</doctitle> -->
+<!--           <windowtitle>Thumbnailator API Documentation (Version ${project.version})</windowtitle> -->
+<!--           <locale>en_US</locale> -->
+<!--           <show>public</show> -->
+<!--           <use>false</use> -->
+<!--           <destDir>javadoc</destDir> -->
+<!--           <archive> -->
+<!--             <manifestEntries> -->
+<!--               <Specification-Title>Thumbnailator API Documentation</Specification-Title> -->
+<!--               <Specification-Version>${project.version}</Specification-Version> -->
+<!--               <Specification-Vendor>coobird.net</Specification-Vendor> -->
+<!--               <Implementation-Title>Thumbnailator API Documentation</Implementation-Title> -->
+<!--               <Implementation-Version>${project.version}</Implementation-Version> -->
+<!--               <Implementation-Vendor>coobird.net</Implementation-Vendor> -->
+<!--             </manifestEntries> -->
+<!--           </archive> -->
+<!--           <excludeResources>false</excludeResources> -->
+<!--         </configuration> -->
+<!--         <executions> -->
+<!--           <execution> -->
+<!--             <id>attach-javadocs</id> -->
+<!--             <goals> -->
+<!--               <goal>jar</goal> -->
+<!--             </goals> -->
+<!--           </execution> -->
+<!--         </executions> -->
+<!--       </plugin> -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>

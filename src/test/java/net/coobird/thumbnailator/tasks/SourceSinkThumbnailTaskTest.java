@@ -1,5 +1,12 @@
 package net.coobird.thumbnailator.tasks;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,6 +16,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
+
+import org.junit.Test;
 
 import net.coobird.thumbnailator.TestUtils;
 import net.coobird.thumbnailator.ThumbnailParameter;
@@ -22,14 +31,9 @@ import net.coobird.thumbnailator.tasks.io.ImageSource;
 import net.coobird.thumbnailator.tasks.io.InputStreamImageSource;
 import net.coobird.thumbnailator.tasks.io.OutputStreamImageSink;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import org.junit.Test;
-
 public class SourceSinkThumbnailTaskTest
 {
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void task_UsesPreferredFromDestination() throws Exception
 	{
@@ -60,7 +64,7 @@ public class SourceSinkThumbnailTaskTest
 		verify(destination).write(any(BufferedImage.class));
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void task_UsesOriginalFormat() throws Exception
 	{
