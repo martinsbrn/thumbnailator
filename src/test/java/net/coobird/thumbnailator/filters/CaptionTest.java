@@ -1,18 +1,16 @@
 package net.coobird.thumbnailator.filters;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 
-import net.coobird.thumbnailator.filters.Caption;
-import net.coobird.thumbnailator.filters.ImageFilter;
+import org.junit.Test;
+
 import net.coobird.thumbnailator.geometry.Positions;
 import net.coobird.thumbnailator.test.BufferedImageComparer;
 import net.coobird.thumbnailator.util.BufferedImages;
-
-import org.junit.Test;
 
 /**
  * Tests for the {@link Caption} filter.

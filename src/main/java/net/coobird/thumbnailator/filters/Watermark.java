@@ -31,6 +31,8 @@ public class Watermark implements ImageFilter
 	 */
 	private final float opacity;
 	
+	private final int insetLeft, insetRight, insetTop, insetBottom;
+	
 
 	/**
 	 * Instantiates a filter which applies a watermark to an image.
@@ -46,6 +48,11 @@ public class Watermark implements ImageFilter
 	 */
 	public Watermark(Position position, BufferedImage watermarkImg,
 			float opacity)
+	{
+		this(position, watermarkImg, opacity, 0, 0, 0, 0);
+	}
+	
+	public Watermark(Position position, BufferedImage watermarkImg, float opacity, int insetLeft, int insetRight, int insetTop, int insetBottom)
 	{
 		if (position == null)
 		{
@@ -64,6 +71,10 @@ public class Watermark implements ImageFilter
 		this.position = position;
 		this.watermarkImg = watermarkImg;
 		this.opacity = opacity;
+		this.insetLeft = insetLeft;
+		this.insetRight = insetRight;
+		this.insetTop = insetTop;
+		this.insetBottom = insetBottom;
 	}
 
 	public BufferedImage apply(BufferedImage img)
@@ -80,7 +91,7 @@ public class Watermark implements ImageFilter
 
 		Point p = position.calculate(
 				width, height, watermarkWidth, watermarkHeight,
-				0, 0, 0, 0
+				insetLeft, insetRight, insetTop, insetBottom
 		);
 
 		Graphics2D g = imgWithWatermark.createGraphics();

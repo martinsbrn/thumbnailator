@@ -1,6 +1,8 @@
 package net.coobird.thumbnailator;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -22,6 +24,7 @@ import net.coobird.thumbnailator.filters.Canvas;
 import net.coobird.thumbnailator.filters.ImageFilter;
 import net.coobird.thumbnailator.filters.Pipeline;
 import net.coobird.thumbnailator.filters.Rotation;
+import net.coobird.thumbnailator.filters.Text;
 import net.coobird.thumbnailator.filters.Watermark;
 import net.coobird.thumbnailator.geometry.AbsoluteSize;
 import net.coobird.thumbnailator.geometry.Coordinate;
@@ -675,7 +678,7 @@ instance.asFiles("path/to/thumbnail");
 		 * @author coobird
 		 *
 		 */
-		private static enum Status
+		private enum Status
 		{
 			OPTIONAL,
 			READY,
@@ -690,9 +693,9 @@ instance.asFiles("path/to/thumbnail");
 		 * @author coobird
 		 *
 		 */
-		private static interface Property
+		private interface Property
 		{
-			public String getName();
+			String getName();
 		}
 
 		/**
@@ -701,7 +704,7 @@ instance.asFiles("path/to/thumbnail");
 		 * @author coobird
 		 *
 		 */
-		private static enum Properties implements Property
+		private enum Properties implements Property
 		{
 			SIZE("size"),
 			WIDTH("width"),
@@ -1970,6 +1973,76 @@ watermark(Positions.CENTER, image, opacity);
 		public Builder<T> watermark(Position position, BufferedImage image, float opacity)
 		{
 			filterPipeline.add(new Watermark(position, image, opacity));
+			return this;
+		}
+		
+		public Builder<T> watermark(Position position, BufferedImage image, float opacity, int insetLeft, int insetRight, int insetTop, int insetBottom)
+		{
+			filterPipeline.add(new Watermark(position, image, opacity, insetLeft, insetRight, insetTop, insetBottom));
+			return this;
+		}
+		
+		/*
+		 * Text
+		 */
+		
+		public Builder<T> text(Text t)
+		{
+			if (t == null)
+			{
+				throw new NullPointerException("Text is null.");
+			}
+			
+			filterPipeline.add(t);
+			
+			return this;
+		}
+		
+		public Builder<T> text(String text)
+		{
+			return text(text, Font.getFont("Arial"), Color.BLACK, Positions.CENTER, 1.0f, null, 0);
+		}
+		
+		public Builder<T> text(String text, Font font, Color color, float opacity)
+		{
+			return text(text, font, color, Positions.CENTER, opacity, null, 0);
+		}
+		
+		public Builder<T> text(String text, Font font, Color color, Position position, float opacity, Color backgroundColor, float backgroundOpacity)
+		{
+			if (text == null || text.length() < 1)
+			{
+				throw new NullPointerException("Text is null.");
+			}
+			if (font == null)
+			{
+				throw new NullPointerException("Font is null.");
+			}
+			if (color == null)
+			{
+				throw new NullPointerException("Color is null.");
+			}
+			
+			filterPipeline.add(new Text(text, font, color, position, opacity, backgroundColor, backgroundOpacity));
+			return this;
+		}
+		
+		public Builder<T> text(String text, Font font, Color color, Position position, float opacity, Color backgroundColor, float backgroundOpacity, int insetLeft, int insetRight, int insetTop, int insetBottom)
+		{
+			if (text == null || text.length() < 1)
+			{
+				throw new NullPointerException("Text is null.");
+			}
+			if (font == null)
+			{
+				throw new NullPointerException("Font is null.");
+			}
+			if (color == null)
+			{
+				throw new NullPointerException("Color is null.");
+			}
+			
+			filterPipeline.add(new Text(text, font, color, position, opacity, backgroundColor, backgroundOpacity, insetLeft, insetRight, insetTop, insetBottom));
 			return this;
 		}
 		
