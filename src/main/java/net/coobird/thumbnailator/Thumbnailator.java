@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -108,6 +109,12 @@ public final class Thumbnailator
 		{
 			throw new IllegalStateException("Parameters to make thumbnail" +
 					" does not have scaling factor nor thumbnail size specified.");
+		}
+		
+		// Perform the image effects
+		for (BufferedImageOp effect : param.getImageEffects())
+		{
+			destinationImage = effect.filter(destinationImage, null);
 		}
 		
 		// Perform the image filters
@@ -364,6 +371,7 @@ public final class Thumbnailator
 	 * 					This method will be removed in 0.5.0, and will not be
 	 * 					further maintained.
 	 */
+	@Deprecated
 	public static Collection<File> createThumbnailsAsCollection(
 			Collection<? extends File> files,
 			Rename rename,
@@ -421,6 +429,7 @@ public final class Thumbnailator
 	 * 					This method will be removed in 0.5.0, and will not be
 	 * 					further maintained.
 	 */
+	@Deprecated
 	public static void createThumbnails(
 			Collection<? extends File> files,
 			Rename rename,

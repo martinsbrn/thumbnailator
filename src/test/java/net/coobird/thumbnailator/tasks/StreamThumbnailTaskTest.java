@@ -1,8 +1,13 @@
 package net.coobird.thumbnailator.tasks;
 
-import static org.junit.Assert.*;
-
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -15,13 +20,13 @@ import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
+import org.junit.Ignore;
+import org.junit.Test;
+
 import net.coobird.thumbnailator.ThumbnailParameter;
 import net.coobird.thumbnailator.builders.BufferedImageBuilder;
 import net.coobird.thumbnailator.resizers.Resizers;
 import net.coobird.thumbnailator.test.BufferedImageComparer;
-
-import org.junit.Ignore;
-import org.junit.Test;
 
 public class StreamThumbnailTaskTest
 {
@@ -60,6 +65,7 @@ public class StreamThumbnailTaskTest
 				ThumbnailParameter.DEFAULT_QUALITY,
 				BufferedImage.TYPE_INT_ARGB,
 				null,
+				null,
 				Resizers.PROGRESSIVE,
 				true,
 				true
@@ -92,6 +98,7 @@ public class StreamThumbnailTaskTest
 				ThumbnailParameter.DEFAULT_FORMAT_TYPE,
 				ThumbnailParameter.DEFAULT_QUALITY,
 				BufferedImage.TYPE_INT_ARGB,
+				null,
 				null,
 				Resizers.PROGRESSIVE,
 				true,
@@ -134,6 +141,7 @@ public class StreamThumbnailTaskTest
 				ThumbnailParameter.DEFAULT_FORMAT_TYPE,
 				ThumbnailParameter.DEFAULT_QUALITY,
 				BufferedImage.TYPE_INT_ARGB,
+				null,
 				null,
 				Resizers.PROGRESSIVE,
 				true,

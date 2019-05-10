@@ -11,6 +11,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import net.coobird.thumbnailator.builders.BufferedImageBuilder;
+import net.coobird.thumbnailator.filters.textwriters.DefaultTextWriter;
+import net.coobird.thumbnailator.filters.textwriters.TextWriter;
 import net.coobird.thumbnailator.geometry.Position;
 
 public class Text implements ImageFilter {
@@ -19,23 +21,30 @@ public class Text implements ImageFilter {
 
 	private final Font font;
 
-	private final Color color, backgroundColor;
+	private final Color color, backgroundColor, secondaryColor;
 
 	private final Position position;
 
 	private final float opacity, backgroundOpacity;
 
-	private final int insetLeft, insetRight, insetTop, insetBottom;
+	private final int insetLeft, insetRight, insetTop, insetBottom, spacing;
+	
+	private TextWriter textWriter;
 
 	public Text(String text, Font font, Color color, Position position, float opacity) {
-		this(text, font, color, position, opacity, null, 0, 0, 0, 0, 0);
+		this(text, font, color, position, opacity, null, 0, null, null, 0, 0, 0, 0, 0);
 	}
 
 	public Text(String text, Font font, Color color, Position position, float opacity, Color backgroundColor, float backgroundOpacity) {
-		this(text, font, color, position, opacity, backgroundColor, backgroundOpacity, 0, 0, 0, 0);
+		this(text, font, color, position, opacity, backgroundColor, backgroundOpacity, null, null, 0, 0, 0, 0, 0);
+	}
+	
+	public Text(String text, Font font, Color color, Position position, float opacity, Color backgroundColor, float backgroundOpacity, int insetLeft, int insetRight, int insetTop, int insetBottom) {
+		this(text, font, color, position, opacity, backgroundColor, backgroundOpacity, null, null, 0, insetLeft, insetRight, insetTop, insetBottom);
 	}
 
-	public Text(String text, Font font, Color color, Position position, float opacity, Color backgroundColor, float backgroundOpacity, int insetLeft, int insetRight, int insetTop, int insetBottom) {
+	public Text(String text, Font font, Color color, Position position, float opacity, Color backgroundColor, float backgroundOpacity, 
+			Color secondaryColor, TextWriter textWriter, int spacing, int insetLeft, int insetRight, int insetTop, int insetBottom) {
 
 		if (text == null || text.length() < 1) {
 			throw new NullPointerException("Text is null.");
@@ -67,6 +76,9 @@ public class Text implements ImageFilter {
 		this.opacity = opacity;
 		this.backgroundColor = backgroundColor;
 		this.backgroundOpacity = backgroundOpacity;
+		this.secondaryColor = secondaryColor;
+		this.textWriter = textWriter;
+		this.spacing = spacing;
 		this.insetLeft = insetLeft;
 		this.insetRight = insetRight;
 		this.insetTop = insetTop;
@@ -99,21 +111,26 @@ public class Text implements ImageFilter {
 		Rectangle2D rect = fontMetrics.getStringBounds(text, g);
 
 		Point p = position.calculate(width, height, (int) rect.getWidth(), (int) rect.getHeight(), insetLeft, insetRight, insetTop, insetBottom);
+		
+		if(textWriter == null) {
+			textWriter = new DefaultTextWriter();
+		}
+		textWriter.setSpacing(spacing);
 
 		// Draw a background with transparency
 		if (backgroundColor != null) {
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, backgroundOpacity));
 			g.setColor(backgroundColor);
-			g.fillRect(p.x, p.y, (int) rect.getWidth(), (int) rect.getHeight());
+			g.fillRect(p.x - textWriter.getSpacing(), p.y - textWriter.getSpacing(), (int) rect.getWidth(), (int) rect.getHeight());
 		}
-
+		
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-		g.setColor(color);
-		g.drawString(text, p.x, p.y + fontMetrics.getAscent());
-
+		
+		textWriter.write(g, text, color, secondaryColor, p.x, p.y + fontMetrics.getAscent());
+		
 		g.dispose();
 
 		return imgWithText;
 	}
-
+	
 }

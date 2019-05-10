@@ -2,14 +2,15 @@ package net.coobird.thumbnailator.builders;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.util.Collections;
 import java.util.List;
 
 import net.coobird.thumbnailator.ThumbnailParameter;
 import net.coobird.thumbnailator.filters.ImageFilter;
+import net.coobird.thumbnailator.geometry.Region;
 import net.coobird.thumbnailator.resizers.DefaultResizerFactory;
 import net.coobird.thumbnailator.resizers.FixedResizerFactory;
-import net.coobird.thumbnailator.geometry.Region;
 import net.coobird.thumbnailator.resizers.Resizer;
 import net.coobird.thumbnailator.resizers.ResizerFactory;
 
@@ -69,6 +70,7 @@ public final class ThumbnailParameterBuilder
 	private String thumbnailFormat = ThumbnailParameter.ORIGINAL_FORMAT;
 	private String thumbnailFormatType = ThumbnailParameter.DEFAULT_FORMAT_TYPE;
 	private List<ImageFilter> filters = Collections.emptyList();
+	private List<BufferedImageOp> effects = Collections.emptyList();
 	private ResizerFactory resizerFactory = DefaultResizerFactory.getInstance();
 	private Region sourceRegion = null;
 	private boolean fitWithinDimensions = true;
@@ -374,6 +376,7 @@ public final class ThumbnailParameterBuilder
 					thumbnailQuality,
 					imageType,
 					filters,
+					effects,
 					resizerFactory,
 					fitWithinDimensions,
 					useExifOrientation
@@ -391,6 +394,7 @@ public final class ThumbnailParameterBuilder
 					thumbnailQuality,
 					imageType,
 					filters,
+					effects,
 					resizerFactory,
 					fitWithinDimensions,
 					useExifOrientation

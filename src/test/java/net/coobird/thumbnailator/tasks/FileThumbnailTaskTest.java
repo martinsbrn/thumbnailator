@@ -1,7 +1,9 @@
 package net.coobird.thumbnailator.tasks;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -10,11 +12,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import net.coobird.thumbnailator.ThumbnailParameter;
-import net.coobird.thumbnailator.resizers.Resizers;
-
 import org.junit.Ignore;
 import org.junit.Test;
+
+import net.coobird.thumbnailator.ThumbnailParameter;
+import net.coobird.thumbnailator.resizers.Resizers;
 
 public class FileThumbnailTaskTest
 {
@@ -52,6 +54,7 @@ public class FileThumbnailTaskTest
 				ThumbnailParameter.DEFAULT_FORMAT_TYPE,
 				ThumbnailParameter.DEFAULT_QUALITY,
 				BufferedImage.TYPE_INT_ARGB,
+				null,
 				null,
 				Resizers.PROGRESSIVE,
 				true,
@@ -91,6 +94,7 @@ public class FileThumbnailTaskTest
 				ThumbnailParameter.DEFAULT_FORMAT_TYPE,
 				ThumbnailParameter.DEFAULT_QUALITY,
 				BufferedImage.TYPE_INT_ARGB,
+				null,
 				null,
 				Resizers.PROGRESSIVE,
 				true,

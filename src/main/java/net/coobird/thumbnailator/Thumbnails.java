@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +27,7 @@ import net.coobird.thumbnailator.filters.Pipeline;
 import net.coobird.thumbnailator.filters.Rotation;
 import net.coobird.thumbnailator.filters.Text;
 import net.coobird.thumbnailator.filters.Watermark;
+import net.coobird.thumbnailator.filters.textwriters.TextWriter;
 import net.coobird.thumbnailator.geometry.AbsoluteSize;
 import net.coobird.thumbnailator.geometry.Coordinate;
 import net.coobird.thumbnailator.geometry.Position;
@@ -852,7 +854,7 @@ instance.asFiles("path/to/thumbnail");
 		 * The {@link ImageFilter}s that should be applied when creating the
 		 * thumbnail.
 		 */
-		private Pipeline filterPipeline = new Pipeline();
+		private Pipeline filterEffectsPipeline = new Pipeline();
 		
 		/**
 		 * Sets the size of the thumbnail.
@@ -1883,7 +1885,7 @@ Thumbnails.of(image)
 				throw new NullPointerException("Watermark is null.");
 			}
 			
-			filterPipeline.add(w);
+			filterEffectsPipeline.add(w);
 			
 			return this;
 		}
@@ -1972,20 +1974,33 @@ watermark(Positions.CENTER, image, opacity);
 		 */
 		public Builder<T> watermark(Position position, BufferedImage image, float opacity)
 		{
-			filterPipeline.add(new Watermark(position, image, opacity));
+			filterEffectsPipeline.add(new Watermark(position, image, opacity));
 			return this;
 		}
 		
 		public Builder<T> watermark(Position position, BufferedImage image, float opacity, int insetLeft, int insetRight, int insetTop, int insetBottom)
 		{
-			filterPipeline.add(new Watermark(position, image, opacity, insetLeft, insetRight, insetTop, insetBottom));
+			filterEffectsPipeline.add(new Watermark(position, image, opacity, insetLeft, insetRight, insetTop, insetBottom));
+			return this;
+		}
+		
+		/*
+		 * Effect
+		 */
+		
+		public Builder<T> effect(BufferedImageOp e) {
+			if (e == null) {
+				throw new NullPointerException("Effect is null.");
+			}
+
+			filterEffectsPipeline.add(e);
+
 			return this;
 		}
 		
 		/*
 		 * Text
 		 */
-		
 		public Builder<T> text(Text t)
 		{
 			if (t == null)
@@ -1993,7 +2008,7 @@ watermark(Positions.CENTER, image, opacity);
 				throw new NullPointerException("Text is null.");
 			}
 			
-			filterPipeline.add(t);
+			filterEffectsPipeline.add(t);
 			
 			return this;
 		}
@@ -2023,11 +2038,19 @@ watermark(Positions.CENTER, image, opacity);
 				throw new NullPointerException("Color is null.");
 			}
 			
-			filterPipeline.add(new Text(text, font, color, position, opacity, backgroundColor, backgroundOpacity));
+			filterEffectsPipeline.add(new Text(text, font, color, position, opacity, backgroundColor, backgroundOpacity));
 			return this;
 		}
 		
-		public Builder<T> text(String text, Font font, Color color, Position position, float opacity, Color backgroundColor, float backgroundOpacity, int insetLeft, int insetRight, int insetTop, int insetBottom)
+		public Builder<T> text(String text, Font font, Color color, Position position, float opacity, Color backgroundColor, float backgroundOpacity, 
+				int insetLeft, int insetRight, int insetTop, int insetBottom)
+		{
+			return text(text, font, color, position, opacity, backgroundColor, backgroundOpacity, 
+					null, null, 0, insetLeft, insetRight, insetTop, insetBottom);
+		}
+		
+		public Builder<T> text(String text, Font font, Color color, Position position, float opacity, Color backgroundColor, float backgroundOpacity, 
+				Color secondaryColor, TextWriter textWriter, int spacing, int insetLeft, int insetRight, int insetTop, int insetBottom)
 		{
 			if (text == null || text.length() < 1)
 			{
@@ -2042,7 +2065,8 @@ watermark(Positions.CENTER, image, opacity);
 				throw new NullPointerException("Color is null.");
 			}
 			
-			filterPipeline.add(new Text(text, font, color, position, opacity, backgroundColor, backgroundOpacity, insetLeft, insetRight, insetTop, insetBottom));
+			filterEffectsPipeline.add(new Text(text, font, color, position, opacity, backgroundColor, backgroundOpacity, 
+					secondaryColor, textWriter, spacing, insetLeft, insetRight, insetTop, insetBottom));
 			return this;
 		}
 		
@@ -2068,7 +2092,7 @@ watermark(Positions.CENTER, image, opacity);
 		 */
 		public Builder<T> rotate(double angle)
 		{
-			filterPipeline.add(Rotation.newRotator(angle));
+			filterEffectsPipeline.add(Rotation.newRotator(angle));
 			return this;
 		}
 
@@ -2098,7 +2122,7 @@ watermark(Positions.CENTER, image, opacity);
 				throw new NullPointerException("Filter is null.");
 			}
 			
-			filterPipeline.add(filter);
+			filterEffectsPipeline.add(filter);
 			return this;
 		}
 		
@@ -2123,7 +2147,7 @@ watermark(Positions.CENTER, image, opacity);
 				throw new NullPointerException("Filters is null.");
 			}
 			
-			filterPipeline.addAll(filters);
+			filterEffectsPipeline.addAll(filters);
 			return this;
 		}
 		
@@ -2216,7 +2240,7 @@ watermark(Positions.CENTER, image, opacity);
 			 */
 			if (croppingPosition != null)
 			{
-				filterPipeline.addFirst(new Canvas(width, height, croppingPosition));
+				filterEffectsPipeline.addFirst(new Canvas(width, height, croppingPosition));
 			}
 			
 			if (Double.isNaN(scaleWidth))
@@ -2255,7 +2279,8 @@ watermark(Positions.CENTER, image, opacity);
 						outputFormatType,
 						outputQuality,
 						imageTypeToUse,
-						filterPipeline.getFilters(),
+						filterEffectsPipeline.getFilters(),
+						filterEffectsPipeline.getEffects(),
 						resizerFactory,
 						fitWithinDimenions,
 						useExifOrientation
@@ -2273,7 +2298,8 @@ watermark(Positions.CENTER, image, opacity);
 						outputFormatType,
 						outputQuality,
 						imageTypeToUse,
-						filterPipeline.getFilters(),
+						filterEffectsPipeline.getFilters(),
+						filterEffectsPipeline.getEffects(),
 						resizerFactory,
 						fitWithinDimenions,
 						useExifOrientation

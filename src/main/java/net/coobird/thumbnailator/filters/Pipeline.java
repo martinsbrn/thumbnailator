@@ -1,6 +1,7 @@
 package net.coobird.thumbnailator.filters;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,6 +23,8 @@ public final class Pipeline implements ImageFilter
 	 */
 	private final List<ImageFilter> filtersToApply;
 	
+	private final List<BufferedImageOp> effectsToApply;
+	
 	/**
 	 * An unmodifiable list of image filters to apply.
 	 * Used by the {@link #getFilters()} method.
@@ -33,6 +36,7 @@ public final class Pipeline implements ImageFilter
 	 * this list as well.
 	 */
 	private final List<ImageFilter> unmodifiableFiltersToApply;
+	private final List<BufferedImageOp> unmodifiableEffectsToApply;
 	
 	/**
 	 * Instantiates a new {@link Pipeline} with no image filters to apply.
@@ -68,8 +72,11 @@ public final class Pipeline implements ImageFilter
 		}
 		
 		filtersToApply = new ArrayList<ImageFilter>(filters);
+		effectsToApply = new ArrayList<BufferedImageOp>();
 		unmodifiableFiltersToApply =
 			Collections.unmodifiableList(filtersToApply);
+		unmodifiableEffectsToApply =
+				Collections.unmodifiableList(effectsToApply);
 	}
 	
 	/**
@@ -113,6 +120,20 @@ public final class Pipeline implements ImageFilter
 		filtersToApply.addAll(filters);
 	}
 	
+	public void add(BufferedImageOp effect) {
+		if (effect == null) {
+			throw new NullPointerException("An image effect must not be null.");
+		}
+		effectsToApply.add(effect);
+	}
+
+	public void addFirst(BufferedImageOp effect) {
+		if (effect == null) {
+			throw new NullPointerException("An image effect must not be null.");
+		}
+		effectsToApply.add(0, effect);
+	}
+
 	/**
 	 * Returns a list of {@link ImageFilter}s which will be applied by this
 	 * {@link Pipeline}.
@@ -125,14 +146,22 @@ public final class Pipeline implements ImageFilter
 		return unmodifiableFiltersToApply;
 	}
 	
+	public List<BufferedImageOp> getEffects() {
+		return unmodifiableEffectsToApply;
+	}
+	
 	public BufferedImage apply(BufferedImage img)
 	{
-		if (filtersToApply.isEmpty())
+		if (filtersToApply.isEmpty() && effectsToApply.isEmpty())
 		{
 			return img;
 		}
 		
 		BufferedImage image = BufferedImages.copy(img);
+		
+		for(BufferedImageOp effect : effectsToApply) {
+			image = effect.filter(image, null);
+		}
 		
 		for (ImageFilter filter : filtersToApply)
 		{

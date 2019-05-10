@@ -2,12 +2,13 @@ package net.coobird.thumbnailator;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.coobird.thumbnailator.filters.ImageFilter;
-import net.coobird.thumbnailator.resizers.FixedResizerFactory;
 import net.coobird.thumbnailator.geometry.Region;
+import net.coobird.thumbnailator.resizers.FixedResizerFactory;
 import net.coobird.thumbnailator.resizers.Resizer;
 import net.coobird.thumbnailator.resizers.ResizerFactory;
 
@@ -142,6 +143,8 @@ public class ThumbnailParameter
 	 */
 	private final List<ImageFilter> filters;
 	
+	private final List<BufferedImageOp> effects;
+	
 	/**
 	 * The {@link ResizerFactory} for obtaining a {@link Resizer} that is
 	 * to be used when performing an image resizing operation.
@@ -264,6 +267,7 @@ public class ThumbnailParameter
 			float outputQuality,
 			int imageType,
 			List<ImageFilter> filters,
+			List<BufferedImageOp> effects,
 			ResizerFactory resizerFactory,
 			boolean fitWithinDimensions,
 			boolean useExifOrientation
@@ -305,6 +309,14 @@ public class ThumbnailParameter
 		else
 		{
 			this.filters = new ArrayList<ImageFilter>(filters);
+		}
+		if (effects == null)
+		{
+			this.effects = new ArrayList<BufferedImageOp>();
+		}
+		else
+		{
+			this.effects = new ArrayList<BufferedImageOp>(effects);
 		}
 				
 		if (resizerFactory == null)
@@ -433,6 +445,7 @@ public class ThumbnailParameter
 			float outputQuality,
 			int imageType,
 			List<ImageFilter> filters,
+			List<BufferedImageOp> effects,
 			Resizer resizer,
 			boolean fitWithinDimensions,
 			boolean useExifOrientation
@@ -449,6 +462,7 @@ public class ThumbnailParameter
 				outputQuality,
 				imageType,
 				filters,
+				effects,
 				new FixedResizerFactory(resizer),
 				fitWithinDimensions,
 				useExifOrientation
@@ -546,6 +560,7 @@ public class ThumbnailParameter
 			float outputQuality,
 			int imageType,
 			List<ImageFilter> filters,
+			List<BufferedImageOp> effects,
 			Resizer resizer,
 			boolean fitWithinDimensions,
 			boolean useExifOrientation
@@ -562,6 +577,7 @@ public class ThumbnailParameter
 				outputQuality,
 				imageType,
 				filters,
+				effects,
 				new FixedResizerFactory(resizer),
 				fitWithinDimensions,
 				useExifOrientation
@@ -653,6 +669,7 @@ public class ThumbnailParameter
 			float outputQuality,
 			int imageType,
 			List<ImageFilter> filters,
+			List<BufferedImageOp> effects,
 			ResizerFactory resizerFactory,
 			boolean fitWithinDimensions,
 			boolean useExifOrientation
@@ -669,6 +686,7 @@ public class ThumbnailParameter
 				outputQuality,
 				imageType,
 				filters,
+				effects,
 				resizerFactory,
 				fitWithinDimensions,
 				useExifOrientation
@@ -767,6 +785,7 @@ public class ThumbnailParameter
 			float outputQuality,
 			int imageType,
 			List<ImageFilter> filters,
+			List<BufferedImageOp> effects,
 			ResizerFactory resizerFactory,
 			boolean fitWithinDimensions,
 			boolean useExifOrientation
@@ -783,6 +802,7 @@ public class ThumbnailParameter
 				outputQuality,
 				imageType,
 				filters,
+				effects,
 				resizerFactory,
 				fitWithinDimensions,
 				useExifOrientation
@@ -924,6 +944,11 @@ public class ThumbnailParameter
 	public List<ImageFilter> getImageFilters()
 	{
 		return filters;
+	}
+
+	public List<BufferedImageOp> getImageEffects()
+	{
+		return effects;
 	}
 	
 	/**
