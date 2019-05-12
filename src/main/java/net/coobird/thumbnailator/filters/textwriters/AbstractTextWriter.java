@@ -15,6 +15,10 @@ public abstract class AbstractTextWriter implements TextWriter {
 		this.spacing = value;
 	}
 	
+	protected void doWrite(Graphics2D g, String text, int x, int y) {
+		g.drawString(text, x, y);
+	}
+	
 	protected void doWrite(Graphics2D g, String text, Color color, int x, int y) {
 		g.setColor(color);
 		g.drawString(text, x, y);
