@@ -2046,11 +2046,11 @@ watermark(Positions.CENTER, image, opacity);
 				int insetLeft, int insetRight, int insetTop, int insetBottom)
 		{
 			return text(text, font, color, position, opacity, backgroundColor, backgroundOpacity, 
-					null, null, 0, insetLeft, insetRight, insetTop, insetBottom);
+					null, null, insetLeft, insetRight, insetTop, insetBottom);
 		}
 		
 		public Builder<T> text(String text, Font font, Color color, Position position, float opacity, Color backgroundColor, float backgroundOpacity, 
-				Color secondaryColor, TextWriter textWriter, int spacing, int insetLeft, int insetRight, int insetTop, int insetBottom)
+				TextWriter textWriter, Color secondaryColor, int insetLeft, int insetRight, int insetTop, int insetBottom)
 		{
 			if (text == null || text.length() < 1)
 			{
@@ -2066,7 +2066,7 @@ watermark(Positions.CENTER, image, opacity);
 			}
 			
 			filterEffectsPipeline.add(new Text(text, font, color, position, opacity, backgroundColor, backgroundOpacity, 
-					secondaryColor, textWriter, spacing, insetLeft, insetRight, insetTop, insetBottom));
+					textWriter, secondaryColor, insetLeft, insetRight, insetTop, insetBottom));
 			return this;
 		}
 		

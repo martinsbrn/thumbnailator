@@ -6,8 +6,8 @@ import java.awt.Graphics2D;
 public class TextOverlapWriter extends AbstractTextWriter {
 
 	@Override
-	public void setSpacing(int value) {
-		super.setSpacing(value == 0 ? 10 : value);
+	public int getSpacing() {
+		return 10;
 	}
 
 	public void write(Graphics2D g, String text, Color color, Color secondaryColor, int x, int y) {

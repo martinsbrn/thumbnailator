@@ -27,24 +27,24 @@ public class Text implements ImageFilter {
 
 	private final float opacity, backgroundOpacity;
 
-	private final int insetLeft, insetRight, insetTop, insetBottom, spacing;
+	private final int insetLeft, insetRight, insetTop, insetBottom;
 	
 	private TextWriter textWriter;
 
 	public Text(String text, Font font, Color color, Position position, float opacity) {
-		this(text, font, color, position, opacity, null, 0, null, null, 0, 0, 0, 0, 0);
+		this(text, font, color, position, opacity, null, 0, null, null, 0, 0, 0, 0);
 	}
 
 	public Text(String text, Font font, Color color, Position position, float opacity, Color backgroundColor, float backgroundOpacity) {
-		this(text, font, color, position, opacity, backgroundColor, backgroundOpacity, null, null, 0, 0, 0, 0, 0);
+		this(text, font, color, position, opacity, backgroundColor, backgroundOpacity, null, null, 0, 0, 0, 0);
 	}
 	
 	public Text(String text, Font font, Color color, Position position, float opacity, Color backgroundColor, float backgroundOpacity, int insetLeft, int insetRight, int insetTop, int insetBottom) {
-		this(text, font, color, position, opacity, backgroundColor, backgroundOpacity, null, null, 0, insetLeft, insetRight, insetTop, insetBottom);
+		this(text, font, color, position, opacity, backgroundColor, backgroundOpacity, null, null, insetLeft, insetRight, insetTop, insetBottom);
 	}
 
 	public Text(String text, Font font, Color color, Position position, float opacity, Color backgroundColor, float backgroundOpacity, 
-			Color secondaryColor, TextWriter textWriter, int spacing, int insetLeft, int insetRight, int insetTop, int insetBottom) {
+			TextWriter textWriter, Color secondaryColor, int insetLeft, int insetRight, int insetTop, int insetBottom) {
 
 		if (text == null || text.length() < 1) {
 			throw new NullPointerException("Text is null.");
@@ -76,9 +76,8 @@ public class Text implements ImageFilter {
 		this.opacity = opacity;
 		this.backgroundColor = backgroundColor;
 		this.backgroundOpacity = backgroundOpacity;
-		this.secondaryColor = secondaryColor;
 		this.textWriter = textWriter;
-		this.spacing = spacing;
+		this.secondaryColor = secondaryColor;
 		this.insetLeft = insetLeft;
 		this.insetRight = insetRight;
 		this.insetTop = insetTop;
@@ -115,7 +114,6 @@ public class Text implements ImageFilter {
 		if(textWriter == null) {
 			textWriter = new DefaultTextWriter();
 		}
-		textWriter.setSpacing(spacing);
 
 		// Draw a background with transparency
 		if (backgroundColor != null) {
@@ -126,7 +124,7 @@ public class Text implements ImageFilter {
 		
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 		
-		textWriter.write(g, text, color, secondaryColor, p.x, p.y + fontMetrics.getAscent());
+		textWriter.write(g, text, color, secondaryColor, p.x, (p.y + fontMetrics.getAscent()));
 		
 		g.dispose();
 

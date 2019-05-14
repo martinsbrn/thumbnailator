@@ -5,14 +5,8 @@ import java.awt.Graphics2D;
 
 public abstract class AbstractTextWriter implements TextWriter {
 	
-	private int spacing = 0;
-
 	public int getSpacing() {
-		return spacing;
-	}
-	
-	public void setSpacing(int value) {
-		this.spacing = value;
+		return 0;
 	}
 	
 	protected void doWrite(Graphics2D g, String text, int x, int y) {

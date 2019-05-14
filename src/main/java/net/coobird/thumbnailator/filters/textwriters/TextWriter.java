@@ -7,8 +7,6 @@ public interface TextWriter {
 
 	int getSpacing();
 	
-	void setSpacing(int value);
-	
 	void write(Graphics2D g, String text, Color color, Color secondaryColor, int x, int y);
 
 }
