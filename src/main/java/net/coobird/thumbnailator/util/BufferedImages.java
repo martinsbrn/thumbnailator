@@ -38,6 +38,11 @@ public final class BufferedImages
 	 */
 	public static BufferedImage copy(BufferedImage img, int imageType)
 	{
+		
+		if(imageType == 0) {
+			imageType = BufferedImage.TYPE_INT_ARGB;
+		}
+		
 		int width = img.getWidth();
 		int height = img.getHeight();
 		
