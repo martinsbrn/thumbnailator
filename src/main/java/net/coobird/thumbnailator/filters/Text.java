@@ -88,6 +88,11 @@ public class Text implements ImageFilter {
 		int width = img.getWidth();
 		int height = img.getHeight();
 		int type = img.getType();
+		
+		// Verificar
+		if(type == 0) {
+			type = BufferedImage.TYPE_INT_ARGB;
+		}
 
 		BufferedImage imgWithText = new BufferedImageBuilder(width, height, type).build();
 		Graphics2D g = imgWithText.createGraphics();
