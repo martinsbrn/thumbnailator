@@ -50,6 +50,7 @@ public class FileThumbnailTaskTest
 				new Dimension(50, 50),
 				null,
 				true,
+				true,
 				"jpg",
 				ThumbnailParameter.DEFAULT_FORMAT_TYPE,
 				ThumbnailParameter.DEFAULT_QUALITY,
@@ -89,6 +90,7 @@ public class FileThumbnailTaskTest
 		ThumbnailParameter param = new ThumbnailParameter(
 				new Dimension(50, 50),
 				null,
+				true,
 				true,
 				"jpg",
 				ThumbnailParameter.DEFAULT_FORMAT_TYPE,

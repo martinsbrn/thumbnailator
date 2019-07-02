@@ -90,6 +90,7 @@ public final class Thumbnailator
 				new FixedSizeThumbnailMaker()
 					.size(destinationWidth, destinationHeight)
 					.keepAspectRatio(param.isKeepAspectRatio())
+					.scaleUp(param.isScaleUp())
 					.fitWithinDimensions(param.fitWithinDimenions())
 					.imageType(imageType)
 					.resizerFactory(param.getResizerFactory())

@@ -1,16 +1,24 @@
 package net.coobird.thumbnailator.makers;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+
+import org.junit.Test;
 
 import net.coobird.thumbnailator.builders.BufferedImageBuilder;
 import net.coobird.thumbnailator.resizers.ProgressiveBilinearResizer;
 import net.coobird.thumbnailator.resizers.Resizer;
 import net.coobird.thumbnailator.resizers.ResizerFactory;
-
-import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * A class which tests the behavior of the
@@ -911,6 +919,60 @@ public class FixedSizeThumbnailMakerTest
 		// then
 		assertEquals(10, thumbnail.getWidth());
 		assertEquals(10, thumbnail.getHeight());
-	}	
+	}
+	
+	@Test
+	public void scaledUp_ScaleUpEnabledFitWithinTrue()
+	{
+	    // given
+	    BufferedImage img = new BufferedImageBuilder(100, 99).build();
+
+	    // when
+	    BufferedImage thumbnail = new FixedSizeThumbnailMaker(200, 200)
+	    .keepAspectRatio(true)
+	    .fitWithinDimensions(true)
+	    //.scaleUp(true) // scale up should be enabled by default
+	    .make(img);
+
+	    // then
+	    assertEquals(200, thumbnail.getWidth());
+	    assertEquals(198, thumbnail.getHeight());
+	}
+
+	@Test
+	public void scaledUp_ScaleUpDisabledFitWithinTrue()
+	{
+	    // given
+	    BufferedImage img = new BufferedImageBuilder(100, 99).build();
+
+	    // when
+	    BufferedImage thumbnail = new FixedSizeThumbnailMaker(200, 200)
+	    .keepAspectRatio(true)
+	    .fitWithinDimensions(true)
+	    .scaleUp(false)
+	    .make(img);
+
+	    // then
+	    assertEquals(100, thumbnail.getWidth());
+	    assertEquals(99, thumbnail.getHeight());
+	}
+
+    @Test
+    public void scaledUp_ScaleUpDisabledFitWithinOnlyOneDimension()
+    {
+        // given
+        BufferedImage img = new BufferedImageBuilder(400, 100).build();
+
+        // when
+        BufferedImage thumbnail = new FixedSizeThumbnailMaker(200, 200)
+        .keepAspectRatio(true)
+        .fitWithinDimensions(true)
+        .scaleUp(false)
+        .make(img);
+
+        // then
+        assertEquals(200, thumbnail.getWidth());
+        assertEquals(50, thumbnail.getHeight());
+    }
 	
 }
