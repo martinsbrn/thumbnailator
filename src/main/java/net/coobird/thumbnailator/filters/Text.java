@@ -89,7 +89,7 @@ public class Text implements ImageFilter {
 		int height = img.getHeight();
 		int type = img.getType();
 		
-		// Verificar
+		// workaround for BufferedImages created by jhlabs filters
 		if(type == 0) {
 			type = BufferedImage.TYPE_INT_ARGB;
 		}

@@ -82,6 +82,11 @@ public class Watermark implements ImageFilter
 		int width = img.getWidth();
 		int height = img.getHeight();
 		int type = img.getType();
+		
+		// workaround for BufferedImages created by jhlabs filters
+		if(type == 0) {
+			type = BufferedImage.TYPE_INT_ARGB;
+		}
 
 		BufferedImage imgWithWatermark =
 			new BufferedImageBuilder(width, height, type).build();
