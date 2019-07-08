@@ -129,6 +129,8 @@ public class Text implements ImageFilter {
 		
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 		
+		textWriter.setImageHeight(height);
+		textWriter.setImageWidth(width);
 		textWriter.write(g, text, color, secondaryColor, p.x, (p.y + fontMetrics.getAscent()));
 		
 		g.dispose();
