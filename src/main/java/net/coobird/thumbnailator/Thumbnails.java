@@ -2002,6 +2002,18 @@ watermark(Positions.CENTER, image, opacity);
 			return this;
 		}
 		
+		public Builder<T> watermark(Position position, BufferedImage image, float opacity, Color backgroundColor, float backgroundOpacity)
+		{
+			filterEffectsPipeline.add(new Watermark(position, image, opacity, backgroundColor, backgroundOpacity));
+			return this;
+		}
+		
+		public Builder<T> watermark(Position position, BufferedImage image, float opacity, Color backgroundColor, float backgroundOpacity, int insetLeft, int insetRight, int insetTop, int insetBottom)
+		{
+			filterEffectsPipeline.add(new Watermark(position, image, opacity, backgroundColor, backgroundOpacity, insetLeft, insetRight, insetTop, insetBottom));
+			return this;
+		}
+		
 		/*
 		 * Effect
 		 */

@@ -1,6 +1,7 @@
 package net.coobird.thumbnailator.filters;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -29,9 +30,11 @@ public class Watermark implements ImageFilter
 	/**
 	 * The opacity of the watermark.
 	 */
-	private final float opacity;
+	private final float opacity, backgroundOpacity;
 	
 	private final int insetLeft, insetRight, insetTop, insetBottom;
+	
+	private final Color backgroundColor;
 	
 
 	/**
@@ -49,10 +52,18 @@ public class Watermark implements ImageFilter
 	public Watermark(Position position, BufferedImage watermarkImg,
 			float opacity)
 	{
-		this(position, watermarkImg, opacity, 0, 0, 0, 0);
+		this(position, watermarkImg, opacity, null, 0, 0, 0, 0, 0);
 	}
 	
-	public Watermark(Position position, BufferedImage watermarkImg, float opacity, int insetLeft, int insetRight, int insetTop, int insetBottom)
+	public Watermark(Position position, BufferedImage watermarkImg, float opacity, Color backgroundColor, float backgroundOpacity) {
+		this(position, watermarkImg, opacity, backgroundColor, backgroundOpacity, 0, 0, 0, 0);
+	}
+	
+	public Watermark(Position position, BufferedImage watermarkImg, float opacity, int insetLeft, int insetRight, int insetTop, int insetBottom) {
+		this(position, watermarkImg, opacity, null, 0, insetLeft, insetRight, insetTop, insetBottom);
+	}
+	
+	public Watermark(Position position, BufferedImage watermarkImg, float opacity, Color backgroundColor, float backgroundOpacity, int insetLeft, int insetRight, int insetTop, int insetBottom)
 	{
 		if (position == null)
 		{
@@ -71,6 +82,8 @@ public class Watermark implements ImageFilter
 		this.position = position;
 		this.watermarkImg = watermarkImg;
 		this.opacity = opacity;
+		this.backgroundColor = backgroundColor;
+		this.backgroundOpacity = backgroundOpacity;
 		this.insetLeft = insetLeft;
 		this.insetRight = insetRight;
 		this.insetTop = insetTop;
@@ -103,6 +116,13 @@ public class Watermark implements ImageFilter
 		
 		// Draw the actual image.
 		g.drawImage(img, 0, 0, null);
+		
+		// Draw a background with transparency
+		if (backgroundColor != null) {
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, backgroundOpacity));
+			g.setColor(backgroundColor);
+			g.fillRect(p.x, p.y, watermarkWidth, watermarkHeight);
+		}
 		
 		// Draw the watermark on top.
 		g.setComposite(
