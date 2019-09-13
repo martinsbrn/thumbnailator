@@ -114,12 +114,19 @@ public class Text implements ImageFilter {
 		FontMetrics fontMetrics = g.getFontMetrics();
 		Rectangle2D rect = fontMetrics.getStringBounds(text, g);
 
+		// If font-size overflows the image width.
+		if (fontMetrics.stringWidth(text) > width) {
+			g.setFont(font.deriveFont((float) (font.getSize2D() * width / rect.getWidth())));
+			fontMetrics = g.getFontMetrics();
+			rect = fontMetrics.getStringBounds(text, g);
+		}
+		
 		Point p = position.calculate(width, height, (int) rect.getWidth(), (int) rect.getHeight(), insetLeft, insetRight, insetTop, insetBottom);
 		
 		if(textWriter == null) {
 			textWriter = new DefaultTextWriter();
 		}
-
+		
 		// Draw a background with transparency
 		if (backgroundColor != null) {
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, backgroundOpacity));
@@ -131,7 +138,7 @@ public class Text implements ImageFilter {
 		
 		textWriter.setImageHeight(height);
 		textWriter.setImageWidth(width);
-		textWriter.write(g, text, color, secondaryColor, p.x, (p.y + fontMetrics.getAscent()));
+		textWriter.write(g, text, color, secondaryColor, p.x, p.y + fontMetrics.getAscent());
 		
 		g.dispose();
 
