@@ -24,14 +24,21 @@
 
 package net.coobird.thumbnailator.tasks.io;
 
-import static org.junit.Assert.*;
-import static org.junit.matchers.JUnitMatchers.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.junit.matchers.JUnitMatchers.containsString;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.Proxy;
 import java.net.URL;
 
+import org.junit.Test;
+import org.junit.experimental.runners.Enclosed;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import net.coobird.thumbnailator.TestUtils;
 import net.coobird.thumbnailator.ThumbnailParameter;
@@ -42,11 +49,6 @@ import net.coobird.thumbnailator.geometry.Positions;
 import net.coobird.thumbnailator.geometry.Region;
 import net.coobird.thumbnailator.test.BufferedImageAssert;
 import net.coobird.thumbnailator.test.BufferedImageComparer;
-
-import org.junit.Test;
-import org.junit.experimental.runners.Enclosed;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 @RunWith(Enclosed.class)
 public class URLImageSourceTest {
@@ -173,6 +175,7 @@ public class URLImageSourceTest {
 			assertEquals("bmp", source.getInputFormatName());
 		}
 
+		@SuppressWarnings("deprecation")
 		@Test(expected = IOException.class)
 		public void fileDoesNotExists() throws IOException {
 			// given

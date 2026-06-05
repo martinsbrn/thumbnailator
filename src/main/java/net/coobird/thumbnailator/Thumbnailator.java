@@ -28,6 +28,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -137,11 +138,16 @@ public final class Thumbnailator {
 					" does not have scaling factor nor thumbnail size specified.");
 		}
 		
+		// Perform the image effects
+		for (BufferedImageOp effect : param.getImageEffects()) {
+			destinationImage = effect.filter(destinationImage, null);
+		}
+
 		// Perform the image filters
 		for (ImageFilter filter : param.getImageFilters()) {
 			destinationImage = filter.apply(destinationImage);
 		}
-		
+
 		// Write the thumbnail image to the destination.
 		task.write(destinationImage);
 		

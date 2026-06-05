@@ -24,24 +24,27 @@
 
 package net.coobird.thumbnailator.tasks;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import net.coobird.thumbnailator.TestUtils;
-import net.coobird.thumbnailator.ThumbnailParameter;
-import net.coobird.thumbnailator.builders.BufferedImageBuilder;
-import net.coobird.thumbnailator.resizers.Resizers;
+import javax.imageio.ImageIO;
 
-import net.coobird.thumbnailator.test.BufferedImageComparer;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import javax.imageio.ImageIO;
+import net.coobird.thumbnailator.TestUtils;
+import net.coobird.thumbnailator.ThumbnailParameter;
+import net.coobird.thumbnailator.builders.BufferedImageBuilder;
+import net.coobird.thumbnailator.resizers.Resizers;
+import net.coobird.thumbnailator.test.BufferedImageComparer;
 
 public class FileThumbnailTaskTest {
 
@@ -67,7 +70,7 @@ public class FileThumbnailTaskTest {
 			throw e;
 		}
 	}
-	
+
 	@Test
 	public void testRead_CorrectUsage() throws IOException {
 		ThumbnailParameter param = new ThumbnailParameter(
@@ -79,11 +82,11 @@ public class FileThumbnailTaskTest {
 				ThumbnailParameter.DEFAULT_QUALITY,
 				BufferedImage.TYPE_INT_ARGB,
 				null,
-				Resizers.PROGRESSIVE,
+				null, Resizers.PROGRESSIVE,
 				true,
 				true
 		);
-		
+
 		File inputFile = TestUtils.copyResourceToTemporaryFile(
 				"Thumbnailator/grid.jpg",
 				temporaryFolder
@@ -92,7 +95,7 @@ public class FileThumbnailTaskTest {
 
 		FileThumbnailTask task =
 			new FileThumbnailTask(param, inputFile, outputFile);
-		
+
 		task.read();
 	}
 
@@ -107,7 +110,7 @@ public class FileThumbnailTaskTest {
 				ThumbnailParameter.DEFAULT_QUALITY,
 				BufferedImage.TYPE_INT_ARGB,
 				null,
-				Resizers.PROGRESSIVE,
+				null, Resizers.PROGRESSIVE,
 				true,
 				true
 		);
@@ -137,7 +140,7 @@ public class FileThumbnailTaskTest {
 				ThumbnailParameter.DEFAULT_QUALITY,
 				BufferedImage.TYPE_INT_ARGB,
 				null,
-				Resizers.PROGRESSIVE,
+				null, Resizers.PROGRESSIVE,
 				true,
 				true
 		);
@@ -146,9 +149,9 @@ public class FileThumbnailTaskTest {
 		// Lack of exception means no interaction with input.
 		File inputFile = temporaryFolder.newFile("random-doesnt-exist");
 		File outputFile = new File(temporaryFolder.getRoot(), "shouldnt-exist");
-		
+
 		FileThumbnailTask task = new FileThumbnailTask(param, inputFile, outputFile);
-		
+
 		assertEquals(param, task.getParam());
 		assertFalse(outputFile.exists());
 	}

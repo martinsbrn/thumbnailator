@@ -26,6 +26,7 @@ package net.coobird.thumbnailator;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -164,7 +165,14 @@ public class ThumbnailParameter {
 	 * The filters will be applied after the original image has been resized.
 	 */
 	private final List<ImageFilter> filters;
-	
+
+	/**
+	 * {@link BufferedImageOp} effects to apply to the thumbnail.
+	 * <p>
+	 * The effects are applied before the image filters.
+	 */
+	private final List<BufferedImageOp> effects;
+
 	/**
 	 * The {@link ResizerFactory} for obtaining a {@link Resizer} that is
 	 * to be used when performing an image resizing operation.
@@ -193,7 +201,7 @@ public class ThumbnailParameter {
 	 * thumbnails.
 	 */
 	private final boolean useExifOrientation;
-	
+
 	/**
 	 * Private constructor which sets all the required fields, and performs
 	 * validation of the given arguments.
@@ -287,6 +295,7 @@ public class ThumbnailParameter {
 			float outputQuality,
 			int imageType,
 			List<ImageFilter> filters,
+			List<BufferedImageOp> effects,
 			ResizerFactory resizerFactory,
 			boolean fitWithinDimensions,
 			boolean useExifOrientation
@@ -324,11 +333,17 @@ public class ThumbnailParameter {
 		} else {
 			this.filters = new ArrayList<ImageFilter>(filters);
 		}
-				
+
+		if (effects == null) {
+			this.effects = new ArrayList<BufferedImageOp>();
+		} else {
+			this.effects = new ArrayList<BufferedImageOp>(effects);
+		}
+
 		if (resizerFactory == null) {
 			throw new IllegalArgumentException("Resizer cannot be null");
 		}
-		
+
 		this.resizerFactory = resizerFactory;
 		this.fitWithinDimensions = fitWithinDimensions;
 		this.useExifOrientation = useExifOrientation;
@@ -443,6 +458,7 @@ public class ThumbnailParameter {
 			float outputQuality,
 			int imageType,
 			List<ImageFilter> filters,
+			List<BufferedImageOp> effects,
 			Resizer resizer,
 			boolean fitWithinDimensions,
 			boolean useExifOrientation
@@ -458,11 +474,12 @@ public class ThumbnailParameter {
 				outputQuality,
 				imageType,
 				filters,
+				effects,
 				new FixedResizerFactory(resizer),
 				fitWithinDimensions,
 				useExifOrientation
 		);
-		
+
 		validateThumbnailSize();
 	}
 	
@@ -555,6 +572,7 @@ public class ThumbnailParameter {
 			float outputQuality,
 			int imageType,
 			List<ImageFilter> filters,
+			List<BufferedImageOp> effects,
 			Resizer resizer,
 			boolean fitWithinDimensions,
 			boolean useExifOrientation
@@ -570,11 +588,12 @@ public class ThumbnailParameter {
 				outputQuality,
 				imageType,
 				filters,
+				effects,
 				new FixedResizerFactory(resizer),
 				fitWithinDimensions,
 				useExifOrientation
 		);
-		
+
 		validateScalingFactor();
 	}
 	
@@ -661,6 +680,7 @@ public class ThumbnailParameter {
 			float outputQuality,
 			int imageType,
 			List<ImageFilter> filters,
+			List<BufferedImageOp> effects,
 			ResizerFactory resizerFactory,
 			boolean fitWithinDimensions,
 			boolean useExifOrientation
@@ -676,11 +696,12 @@ public class ThumbnailParameter {
 				outputQuality,
 				imageType,
 				filters,
+				effects,
 				resizerFactory,
 				fitWithinDimensions,
 				useExifOrientation
 		);
-		
+
 		validateThumbnailSize();
 	}
 	
@@ -774,6 +795,7 @@ public class ThumbnailParameter {
 			float outputQuality,
 			int imageType,
 			List<ImageFilter> filters,
+			List<BufferedImageOp> effects,
 			ResizerFactory resizerFactory,
 			boolean fitWithinDimensions,
 			boolean useExifOrientation
@@ -789,20 +811,30 @@ public class ThumbnailParameter {
 				outputQuality,
 				imageType,
 				filters,
+				effects,
 				resizerFactory,
 				fitWithinDimensions,
 				useExifOrientation
 		);
-		
+
 		validateScalingFactor();
 	}
 	
+	/**
+	 * Returns the list of {@link BufferedImageOp} effects to apply.
+	 *
+	 * @return		The list of effects.
+	 */
+	public List<BufferedImageOp> getImageEffects() {
+		return effects;
+	}
+
 	/**
 	 * Returns the size of the thumbnail.
 	 * <p>
 	 * Returns {@code null} if the scaling factor is set rather than the
 	 * explicit thumbnail size.
-	 * 
+	 *
 	 * @return		The size of the thumbnail.
 	 */
 	public Dimension getSize() {

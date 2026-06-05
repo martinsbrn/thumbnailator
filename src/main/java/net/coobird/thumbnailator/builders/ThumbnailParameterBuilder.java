@@ -94,6 +94,7 @@ public final class ThumbnailParameterBuilder {
 	private String thumbnailFormat = ThumbnailParameter.ORIGINAL_FORMAT;
 	private String thumbnailFormatType = ThumbnailParameter.DEFAULT_FORMAT_TYPE;
 	private List<ImageFilter> filters = Collections.emptyList();
+	private List<java.awt.image.BufferedImageOp> effects = Collections.emptyList();
 	private ResizerFactory resizerFactory = DefaultResizerFactory.getInstance();
 	private Region sourceRegion = null;
 	private boolean fitWithinDimensions = true;
@@ -372,6 +373,7 @@ public final class ThumbnailParameterBuilder {
 					thumbnailQuality,
 					imageType,
 					filters,
+					effects,
 					resizerFactory,
 					fitWithinDimensions,
 					useExifOrientation
@@ -387,6 +389,7 @@ public final class ThumbnailParameterBuilder {
 					thumbnailQuality,
 					imageType,
 					filters,
+					effects,
 					resizerFactory,
 					fitWithinDimensions,
 					useExifOrientation

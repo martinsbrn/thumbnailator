@@ -54,21 +54,21 @@ import java.util.Queue;
 
 import javax.imageio.ImageIO;
 
-import net.coobird.thumbnailator.builders.BufferedImageBuilder;
-import net.coobird.thumbnailator.builders.ThumbnailParameterBuilder;
-import net.coobird.thumbnailator.name.ConsecutivelyNumberedFilenames;
-import net.coobird.thumbnailator.name.Rename;
-import net.coobird.thumbnailator.test.BufferedImageAssert;
-import net.coobird.thumbnailator.test.BufferedImageComparer;
-
-import net.coobird.thumbnailator.util.exif.ExifFilterUtils;
-import net.coobird.thumbnailator.util.exif.Orientation;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
+import net.coobird.thumbnailator.builders.BufferedImageBuilder;
+import net.coobird.thumbnailator.builders.ThumbnailParameterBuilder;
+import net.coobird.thumbnailator.name.ConsecutivelyNumberedFilenames;
+import net.coobird.thumbnailator.name.Rename;
+import net.coobird.thumbnailator.test.BufferedImageAssert;
+import net.coobird.thumbnailator.test.BufferedImageComparer;
+import net.coobird.thumbnailator.util.exif.ExifFilterUtils;
+import net.coobird.thumbnailator.util.exif.Orientation;
 
 @RunWith(Enclosed.class)
 public class ThumbnailsBuilderInputOutputTest {
@@ -2194,7 +2194,7 @@ public class ThumbnailsBuilderInputOutputTest {
 
 		@Parameterized.Parameters(name = "sourceExtension={0}, destinationExtension={1}, outputFormat={2}, expectedFormat={3}")
 		public static Collection<Object> testCases() {
-			List<Object[]> cases = new ArrayList<Object[]>();
+			List<Object[]> cases = new ArrayList<>();
 
 			Map<String, String> expectedFormatNames = new HashMap<String, String>() {{
 				put("jpg", "JPEG");
@@ -2282,7 +2282,7 @@ public class ThumbnailsBuilderInputOutputTest {
 			if (s == null) {
 				return null;
 			}
-			return s.equalsIgnoreCase("png") ? "png" : "jpg";
+			return "png".equalsIgnoreCase(s) ? "png" : "jpg";
 		}
 	}
 
@@ -2291,7 +2291,7 @@ public class ThumbnailsBuilderInputOutputTest {
 
 		@Parameterized.Parameters(name = "orientation={0}, sourcePathPattern={1}, width={2}, height={3}")
 		public static Collection<Object[]> values() {
-			List<Object[]> values = new ArrayList<Object[]>();
+			List<Object[]> values = new ArrayList<>();
 			for (int i = 1; i <= 8; i++) {
 				values.add(new Object[] { i, "source", 80, 80 });
 				values.add(new Object[] { i, "sourceWide", 80, 40 });
@@ -2699,7 +2699,7 @@ public class ThumbnailsBuilderInputOutputTest {
 					.asFiles(Collections.singletonList(outputFile));
 
 			// Check contents of returned list.
-			Queue<File> verificationQueue = new LinkedList<File>(outputFiles);
+			Queue<File> verificationQueue = new LinkedList<>(outputFiles);
 			int expectedListSize = 0;
 			if (expectOutputChanged) {
 				expectedListSize++;
@@ -2765,7 +2765,7 @@ public class ThumbnailsBuilderInputOutputTest {
 					.asFiles(rename);
 
 			// Check contents of returned list.
-			Queue<File> verificationQueue = new LinkedList<File>(outputFiles);
+			Queue<File> verificationQueue = new LinkedList<>(outputFiles);
 			int expectedListSize = 0;
 			if (expectOutputChanged) {
 				expectedListSize++;
@@ -2837,7 +2837,7 @@ public class ThumbnailsBuilderInputOutputTest {
 					.asFiles(Collections.singletonList(outputFile));
 
 			// then
-			Queue<File> verificationQueue = new LinkedList<File>(outputFiles);
+			Queue<File> verificationQueue = new LinkedList<>(outputFiles);
 			int expectedListSize = 0;
 			if (expectOutputChanged) {
 				expectedListSize++;
@@ -2869,7 +2869,7 @@ public class ThumbnailsBuilderInputOutputTest {
 					.asFiles(Collections.singletonList(outputFile));
 
 			// then
-			Queue<File> verificationQueue = new LinkedList<File>(outputFiles);
+			Queue<File> verificationQueue = new LinkedList<>(outputFiles);
 			int expectedListSize = 0;
 			if (expectOutputChanged) {
 				expectedListSize++;
@@ -2925,7 +2925,7 @@ public class ThumbnailsBuilderInputOutputTest {
 					.asFiles(Collections.singletonList(outputFile));
 
 			// Check contents of returned list.
-			Queue<File> verificationQueue = new LinkedList<File>(outputFiles);
+			Queue<File> verificationQueue = new LinkedList<>(outputFiles);
 			int expectedListSize = 0;
 			if (expectOutputChanged) {
 				expectedListSize++;
@@ -3021,7 +3021,7 @@ public class ThumbnailsBuilderInputOutputTest {
 
 			// then
 			// Check contents of returned list.
-			Queue<File> verificationQueue = new LinkedList<File>(outputFiles);
+			Queue<File> verificationQueue = new LinkedList<>(outputFiles);
 			int expectedListSize = 0;
 			if (expectOutputChanged) {
 				expectedListSize++;
@@ -3181,7 +3181,7 @@ public class ThumbnailsBuilderInputOutputTest {
 					.asFiles(Arrays.asList(firstOutputFile, secondOutputFile));
 
 			// Check contents of returned list.
-			Queue<File> verificationQueue = new LinkedList<File>(outputFiles);
+			Queue<File> verificationQueue = new LinkedList<>(outputFiles);
 			int expectedListSize = 0;
 			if (expectFirstOutputChanged) {
 				expectedListSize++;
@@ -3269,7 +3269,7 @@ public class ThumbnailsBuilderInputOutputTest {
 					.asFiles(rename);
 
 			// Check contents of returned list.
-			Queue<File> verificationQueue = new LinkedList<File>(outputFiles);
+			Queue<File> verificationQueue = new LinkedList<>(outputFiles);
 			int expectedListSize = 0;
 			if (expectFirstOutputChanged) {
 				expectedListSize++;
@@ -3364,7 +3364,7 @@ public class ThumbnailsBuilderInputOutputTest {
 					.allowOverwrite(allowOverwrite)
 					.asFiles(Arrays.asList(firstOutputFile, secondOutputFile));
 
-			Queue<File> verificationQueue = new LinkedList<File>(outputFiles);
+			Queue<File> verificationQueue = new LinkedList<>(outputFiles);
 			int expectedListSize = 0;
 			if (expectFirstOutputChanged) {
 				expectedListSize++;
@@ -3404,7 +3404,7 @@ public class ThumbnailsBuilderInputOutputTest {
 					.outputFormat("png")
 					.asFiles(Arrays.asList(firstOutputFile, secondOutputFile));
 
-			Queue<File> verificationQueue = new LinkedList<File>(outputFiles);
+			Queue<File> verificationQueue = new LinkedList<>(outputFiles);
 			int expectedListSize = 0;
 			if (expectFirstOutputChanged) {
 				expectedListSize++;
@@ -3472,7 +3472,7 @@ public class ThumbnailsBuilderInputOutputTest {
 					.asFiles(Arrays.asList(firstOutputFile, secondOutputFile));
 
 			// Check contents of returned list.
-			Queue<File> verificationQueue = new LinkedList<File>(outputFiles);
+			Queue<File> verificationQueue = new LinkedList<>(outputFiles);
 			int expectedListSize = 0;
 			if (expectFirstOutputChanged) {
 				expectedListSize++;
@@ -3574,7 +3574,7 @@ public class ThumbnailsBuilderInputOutputTest {
 					.asFiles(Arrays.asList(firstOutputFile, secondOutputFile));
 
 			// Check contents of returned list.
-			Queue<File> verificationQueue = new LinkedList<File>(outputFiles);
+			Queue<File> verificationQueue = new LinkedList<>(outputFiles);
 			int expectedListSize = 0;
 			if (expectFirstOutputChanged) {
 				expectedListSize++;
@@ -4868,8 +4868,8 @@ public class ThumbnailsBuilderInputOutputTest {
 					.asFiles(Rename.PREFIX_DOT_THUMBNAIL);
 
 			// then
-			File outFile1 = new File(temporaryFolder.getRoot(), "thumbnail.grid.png");
-			File outFile2 = new File(temporaryFolder.getRoot(), "thumbnail.grid.jpg");
+//			File outFile1 = new File(temporaryFolder.getRoot(), "thumbnail.grid.png");
+//			File outFile2 = new File(temporaryFolder.getRoot(), "thumbnail.grid.jpg");
 
 			assertEquals(2, thumbnails.size());
 

@@ -269,7 +269,7 @@ public final class FixedSizeThumbnailMaker extends ThumbnailMaker {
 		if (keepRatio) {
 			int sourceWidth = img.getWidth();
 			int sourceHeight = img.getHeight();
-			
+
 			double sourceRatio = (double)sourceWidth / (double)sourceHeight;
 			double targetRatio = (double)targetWidth / (double)targetHeight;
 			

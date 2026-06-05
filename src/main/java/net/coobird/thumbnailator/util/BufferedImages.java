@@ -61,6 +61,11 @@ public final class BufferedImages {
 	 * @return			A copy of the specified image.
 	 */
 	public static BufferedImage copy(BufferedImage img, int imageType) {
+		// workaround for BufferedImages created by jhlabs filters
+		if (imageType == 0) {
+			imageType = BufferedImage.TYPE_INT_ARGB;
+		}
+
 		int width = img.getWidth();
 		int height = img.getHeight();
 
